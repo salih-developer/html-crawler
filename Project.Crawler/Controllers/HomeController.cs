@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
 using Project.Crawler.Models;
 
@@ -12,15 +13,34 @@ namespace Project.Crawler.Controllers
     {
         public IActionResult Index()
         {
+
             return View();
         }
-
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            HtmlWeb web = new HtmlWeb();
+            HtmlDocument doc = web.Load("https://www.morhipo.com/kampanya/detay/21008663/74663/network-bluz");
 
-            return View();
+            List<KeyValuePair<string, string>> keyValues = new List<KeyValuePair<string, string>>();
+            GetData(doc.DocumentNode.SelectSingleNode("//body"), ref keyValues);
+
+            var model = new CrawlerViewModel
+                        {
+                            KeyValuePairs = keyValues,
+                            HtmlDoc=doc.DocumentNode.InnerHtml
+                        };
+            return View(model);
         }
+
+        private void GetData(HtmlNode documentNode, ref List<KeyValuePair<string, string>> keyValues)
+        {
+            foreach (var item in documentNode.ChildNodes)
+            {
+                keyValues.Add(new KeyValuePair<string, string>(item.XPath, item.InnerText));
+                GetData(item, ref keyValues);
+            }
+        }
+
 
         public IActionResult Contact()
         {
