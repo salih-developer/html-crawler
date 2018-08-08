@@ -22,10 +22,10 @@
         {
             //setup event listeners
             //var pathx="//div | //span | //table | //td | //tr | //ul | //ol | //li | //p";
-            var pathx = "//div | //span | //table | //th | //td | //tr | //ul | //ol | //li | //p | //iframe";
+            var pathx = "//div | //span | //a | //strong | //img | //table | //th | //td | //tr | //ul | //ol | //li | //p | //iframe";
             var selection = $XPathSelect(pathx);
             for (var element, i = 0; element = selection(i); i++) {
-                if (element.tagName.match(/^(div|span|table|td|tr|ul|ol|li|p)$/i))	//redundant check.
+                if (element.tagName.match(/^(div|span|table|td|tr|ul|ol|li|p|strong|a|img)$/i))	//redundant check.
                 {
                     var m = new classMausWork(element);
                     gObjArrMW.push(m);
@@ -211,6 +211,12 @@
     //  var i, arr = [], xpr = document.evaluate(p, context, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
     //  return function(x) { return xpr.snapshotItem(x); };	//closure.  wooot!  returns function-type array of elements (usually elements, or something else depending on the xpath expression).
     //}
+    //function $XPathSelect(p, context) {
+    //    if (!context) context = document;
+    //    var xpr = document.evaluate(p, context, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+    //    return function (x) { return xpr.snapshotItem(x); };
+    //}
+
     function $XPathSelect(p, context) {
         if (!context) context = document;
         var xpr = document.evaluate(p, context, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -221,12 +227,13 @@
     }
 
     function ElementInfo(element) {
+        return getNodeXPath(element);
         var txt = '';
         txt = element.tagName;
         txt = attrib(txt, element, 'id');
         txt = attrib(txt, element, 'class');
         return txt;
-
+        
         function attrib(t, e, a) {
             if (e.hasAttribute(a)) {
                 t += "[@" + a + "='" + e.getAttribute(a) + "']";
@@ -235,5 +242,45 @@
         }
 
     }
+
+
+    /**
+ * Gets an XPath for an node which describes its hierarchical location.
+ */
+    var getNodeXPath = function (node) {
+        if (node && node.id)
+            return '//*[@id="' + node.id + '"]';
+        else
+            return getNodeTreeXPath(node);
+    };
+
+    var getNodeTreeXPath = function (node) {
+        var paths = [];
+
+        // Use nodeName (instead of localName) so namespace prefix is included (if any).
+        for (; node && (node.nodeType == 1 || node.nodeType == 3); node = node.parentNode) {
+            var index = 0;
+            // EXTRA TEST FOR ELEMENT.ID
+            if (node && node.id) {
+                paths.splice(0, 0, '/*[@id="' + node.id + '"]');
+                break;
+            }
+
+            for (var sibling = node.previousSibling; sibling; sibling = sibling.previousSibling) {
+                // Ignore document type declaration.
+                if (sibling.nodeType == Node.DOCUMENT_TYPE_NODE)
+                    continue;
+
+                if (sibling.nodeName == node.nodeName)
+                    ++index;
+            }
+
+            var tagName = (node.nodeType == 1 ? node.nodeName.toLowerCase() : "text()");
+            var pathIndex = (index ? "[" + (index + 1) + "]" : "");
+            paths.splice(0, 0, tagName + pathIndex);
+        }
+
+        return paths.length ? "/" + paths.join("/") : null;
+    };
 
 })();

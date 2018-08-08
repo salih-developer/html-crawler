@@ -19,7 +19,7 @@ namespace Project.Crawler.Controllers
         public IActionResult About()
         {
             HtmlWeb web = new HtmlWeb();
-            HtmlDocument doc = web.Load("https://www.morhipo.com/kampanya/detay/21008663/74663/network-bluz");
+            HtmlDocument doc = web.Load("https://www.morhipo.com/people-by-fabrika-pfkaw18el0010-volanli-abiye/21821153/detay?depid=20");
 
             List<KeyValuePair<string, string>> keyValues = new List<KeyValuePair<string, string>>();
             GetData(doc.DocumentNode.SelectSingleNode("//body"), ref keyValues);
