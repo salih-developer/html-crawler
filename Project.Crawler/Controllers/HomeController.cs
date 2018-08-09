@@ -16,10 +16,17 @@ namespace Project.Crawler.Controllers
 
             return View();
         }
+        [HttpGet]
         public IActionResult About()
         {
+            return this.View(new CrawlerViewModel{});
+        }
+
+        [HttpPost]
+        public IActionResult About(string url)
+        {
             HtmlWeb web = new HtmlWeb();
-            HtmlDocument doc = web.Load("https://www.morhipo.com/people-by-fabrika-pfkaw18el0010-volanli-abiye/21821153/detay?depid=20");
+            HtmlDocument doc = web.Load(url);
 
             List<KeyValuePair<string, string>> keyValues = new List<KeyValuePair<string, string>>();
             GetData(doc.DocumentNode.SelectSingleNode("//body"), ref keyValues);
@@ -40,24 +47,14 @@ namespace Project.Crawler.Controllers
                 GetData(item, ref keyValues);
             }
         }
-
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
+        public IActionResult PopupXpathSelect()
         {
             return View();
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult SaveXpath()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return null;
         }
+
     }
 }

@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    @using (Html.BeginForm("SaveXpath","Home"))
+    {
+        @Html.ValidationSummary(true)
+        <legend class="AddAComment">XPath Show</legend>
+
+        <div class="commentformwrapper">
+
+            <div class="editor-text">
+                <span class="editor-label">xpath:</span>
+            </div>
+
+            <div class="editor-text">
+                <input type="text" id="xpath" name="xpath"/>
+            </div>
+
+           
+
+            <input type="submit" id="submit" value="Kaydet" />
+
+        </div>
+
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('form').submit(function () {
+            var serializedForm = $(this).serialize();
+            $.ajax({
+                url: '@Url.Action("SaveXpath")',
+                type: "POST",
+                data: serializedForm,
+                success: function (result) {
+
+                    alert("success " );
+                },
+                error: function (result) {
+                    alert("Failed");
+                }
+
+            });
+            return false;
+        });
+    });
+
+</script>

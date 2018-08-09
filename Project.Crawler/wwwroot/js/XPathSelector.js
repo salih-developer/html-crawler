@@ -172,23 +172,6 @@
     function PromptUserXpath(defaultpath)		//prompt user, isolate element.
     {
         var userpath = prompt("XPath of elements to isolate : ", defaultpath);
-        //if (userpath && userpath.length > 0) {
-        //    var pathx = TransformToNonIsolatePath(userpath);
-        //    try {
-        //        var element;
-        //        var elements = $XPathSelect(pathx);
-        //        for (var i = 0; element = elements(i); i++) {
-        //            if (!element.nodeName.match(/^(head|title)$/i)) {
-        //                ElementRemove(element);
-        //            }
-        //        }
-        //    }
-
-        //    catch (err) {
-        //        alert("wtf: " + err);
-        //    }
-
-        //}
     }
     //(under construction) work on this function
     //currently only simple expressions are converted.
@@ -228,19 +211,6 @@
 
     function ElementInfo(element) {
         return getNodeXPath(element);
-        var txt = '';
-        txt = element.tagName;
-        txt = attrib(txt, element, 'id');
-        txt = attrib(txt, element, 'class');
-        return txt;
-        
-        function attrib(t, e, a) {
-            if (e.hasAttribute(a)) {
-                t += "[@" + a + "='" + e.getAttribute(a) + "']";
-            }
-            return t;
-        }
-
     }
 
 

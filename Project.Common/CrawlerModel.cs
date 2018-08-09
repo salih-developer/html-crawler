@@ -1,4 +1,4 @@
-﻿namespace Project.Crawler.Models
+﻿namespace Project.Common
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

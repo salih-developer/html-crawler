@@ -3,6 +3,43 @@
     ViewData["Title"] = "About";
 }
 
-@Html.Raw(Model.HtmlDoc)
+<div class="row">
+    @using (Html.BeginForm("About", "Home", null, FormMethod.Post))
+    {
+        <input id="url" name="url" type="text" />
+        <button>getir</button>
+    }
+</div>
+@if (!string.IsNullOrEmpty(Model.HtmlDoc))
+{
+    @Html.Raw(Model.HtmlDoc)
+    <script src="~/js/XPathSelector.js"></script>
+}
 
-<script src="~/js/XPathSelector.js"></script>
+<div id="Dialog-Box">
+  
+</div>
+<button onclick="OpenDialog()">Open Dialog</button>
+<script>
+    $('#Dialog-Box').dialog({
+        autoOpen: false,
+        height: 500,
+        width: 700,
+        modal: false
+    });
+    function OpenDialog() {
+        $('#Dialog-Box').dialog('open');
+    }
+    function onsave() {
+
+        $.ajax({
+            url: '@Url.Action("PopupXpathSelect", "Home")',
+            type: 'POST',
+            success: function (msg) {
+            },
+            error: function (msg) {
+            }
+        });
+
+    }
+</script>
