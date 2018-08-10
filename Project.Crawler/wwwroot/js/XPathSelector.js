@@ -97,7 +97,7 @@
         var defaultStyle = element.getAttribute('style');
 
         this.mouse_over = function (ev) {
-            //if (gHovering) return;
+            if (gHovering) return;
             //if (ev.target != element) return;
             var e = element;		//var e=ev.target;
             var s = e.style;
@@ -106,28 +106,29 @@
             s.borderColor = 'lime';
             s.borderStyle = 'solid';
             InfoMSG(ElementInfo(e), 'yellow', 'blue', 'yellow');
-            //gHoverElement = e;		//gHoverElement=ev.target;	//gHoverElement=e;	
-            //gHovering = true;
+            gHoverElement = e;		//gHoverElement=ev.target;	//gHoverElement=e;	
+            gHovering = true;
             ev.stopPropagation();
         };
         this.mouse_out = function (ev) {
-            //if (ev.target != gHoverElement) return;
+            if (ev.target != gHoverElement) return;
             var e = element;		//var e=ev.target;
             e.setAttribute('style', defaultStyle);	// ev.target.setAttribute('style',defaultStyle);			
             InfoMSG('-', 'white', 'black', 'white');
-            //gHoverElement = null;
-            //gHovering = false;
-            //ev.stopPropagation();
+            gHoverElement = null;
+            gHovering = false;
+            ev.stopPropagation();
         };
         this.mouse_click = function (ev) {
-            //if (ev.target != gHoverElement) return;
+            if (ev.target != gHoverElement) return;
+            
             var e = element;		//var e=ev.target;
             e.setAttribute('style', defaultStyle);  //ev.target.setAttribute('style',defaultStyle);			
             gSelectedElement = e;		//gSelectedElement=ev.target;		//=ev.target;			
             ev.stopPropagation();
             //CleanupDOMSelection();
-            //gHoverElement = null;
-            //gHovering = false;
+            gHoverElement = null;
+            gHovering = true;
             ElementSelected(gSelectedElement);	//finished selecting, cleanup then move to next part, element isolation.
         };
         this.resetElementStyle = function () {
@@ -135,7 +136,11 @@
                 this.element.setAttribute('style', defaultStyle);
             }
         };
+        $("body").on("click", "#btnkaydet", function () {
+            gHovering = false;
+        });
     }
+  
     function MiscEvent(ev)		//keypress, and mouseover/mouseout/mousedown event on body.  cancel selecting.
     {
         if (ev.type == 'mouseout') {
@@ -171,7 +176,16 @@
 
     function PromptUserXpath(defaultpath)		//prompt user, isolate element.
     {
-        var userpath = prompt("XPath of elements to isolate : ", defaultpath);
+        //var userpath = prompt("XPath of elements to isolate : ", defaultpath);
+        $("#myModal .modal-body").load('/home/PopupXpathSelect');
+        $("#myModal").modal({
+            autoOpen: true,
+            width: 1000,
+            resizable: true,
+            title: 'Add Xpath',
+            modal: true
+
+        });
     }
     //(under construction) work on this function
     //currently only simple expressions are converted.

@@ -1,8 +1,11 @@
-﻿@model CrawlerViewModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CrawlerViewModel
 @{
     ViewData["Title"] = "About";
 }
-
+@section Scripts {
+    <script src="~/js/XPathSelector.js"></script>
+}
 <div class="row">
     @using (Html.BeginForm("About", "Home", null, FormMethod.Post))
     {
@@ -10,36 +13,43 @@
         <button>getir</button>
     }
 </div>
+
 @if (!string.IsNullOrEmpty(Model.HtmlDoc))
 {
     @Html.Raw(Model.HtmlDoc)
-    <script src="~/js/XPathSelector.js"></script>
+
 }
 
-<div id="Dialog-Box">
-  
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btnkaydet" data-dismiss="modal">Kaydet</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+
+    </div>
 </div>
-<button onclick="OpenDialog()">Open Dialog</button>
+@*<button onclick="OpenDialog()">Open Dialog</button>*@
 <script>
-    $('#Dialog-Box').dialog({
-        autoOpen: false,
-        height: 500,
-        width: 700,
-        modal: false
-    });
-    function OpenDialog() {
-        $('#Dialog-Box').dialog('open');
-    }
-    function onsave() {
+   
+    @*function OpenDialog() {
 
-        $.ajax({
-            url: '@Url.Action("PopupXpathSelect", "Home")',
-            type: 'POST',
-            success: function (msg) {
-            },
-            error: function (msg) {
-            }
+        $("#myModal .modal-body").load('@Url.Action("PopupXpathSelect", "Home",new{path})');
+        $("#myModal").modal({
+            autoOpen: true,
+            width: 1000,
+            resizable: true,
+            title: 'Add Xpath',
+            modal: true
+
         });
-
-    }
+    }*@
 </script>
