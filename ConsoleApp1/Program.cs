@@ -16,9 +16,10 @@ namespace ConsoleApp1
             chromeOptions.AddArgument("--headless");
             chromeOptions.AddArgument("--no-sandbox");
             chromeOptions.AddArgument("--disable-dev-shm-usage");
+            chromeOptions.AddArgument("--ignore-certificate-errors");
 
-            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
-            //using (var driver = new ChromeDriver("/home/dev", chromeOptions))
+            //using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            using (var driver = new ChromeDriver("/home/dev", chromeOptions))
             {
                 driver.Navigate().GoToUrl(@"https://www.morhipo.com/people-by-fabrika-pfkaw18el0010-volanli-abiye/21821153/detay?depid=20");
                 var tt=driver.FindElement(By.XPath("//*[@id='product-price']/div/div/div/span/span[2]/strong"));
