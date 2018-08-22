@@ -97,7 +97,7 @@
         var defaultStyle = element.getAttribute('style');
 
         this.mouse_over = function (ev) {
-            if (gHovering) return;
+            //if (gHovering) return;
             //if (ev.target != element) return;
             var e = element;		//var e=ev.target;
             var s = e.style;
@@ -106,29 +106,33 @@
             s.borderColor = 'lime';
             s.borderStyle = 'solid';
             InfoMSG(ElementInfo(e), 'yellow', 'blue', 'yellow');
-            gHoverElement = e;		//gHoverElement=ev.target;	//gHoverElement=e;	
-            gHovering = true;
+            //gHoverElement = e;		//gHoverElement=ev.target;	//gHoverElement=e;	
+            //gHovering = true;
             ev.stopPropagation();
         };
         this.mouse_out = function (ev) {
-            if (ev.target != gHoverElement) return;
+            //if (ev.target != gHoverElement) return;
             var e = element;		//var e=ev.target;
             e.setAttribute('style', defaultStyle);	// ev.target.setAttribute('style',defaultStyle);			
             InfoMSG('-', 'white', 'black', 'white');
-            gHoverElement = null;
-            gHovering = false;
-            ev.stopPropagation();
+            //gHoverElement = null;
+            //gHovering = false;
+            //ev.stopPropagation();
         };
         this.mouse_click = function (ev) {
-            if (ev.target != gHoverElement) return;
-            
+            if (ev.buttons != 2) {
+                ev.stopPropagation();
+                return;
+            }
+              
+            //if (ev.target != gHoverElement) return;
             var e = element;		//var e=ev.target;
             e.setAttribute('style', defaultStyle);  //ev.target.setAttribute('style',defaultStyle);			
             gSelectedElement = e;		//gSelectedElement=ev.target;		//=ev.target;			
             ev.stopPropagation();
             //CleanupDOMSelection();
-            gHoverElement = null;
-            gHovering = true;
+            //gHoverElement = null;
+            //gHovering = false;
             ElementSelected(gSelectedElement);	//finished selecting, cleanup then move to next part, element isolation.
         };
         this.resetElementStyle = function () {
@@ -136,11 +140,7 @@
                 this.element.setAttribute('style', defaultStyle);
             }
         };
-        $("body").on("click", "#btnkaydet", function () {
-            gHovering = false;
-        });
     }
-  
     function MiscEvent(ev)		//keypress, and mouseover/mouseout/mousedown event on body.  cancel selecting.
     {
         if (ev.type == 'mouseout') {
@@ -170,22 +170,37 @@
     //(Section 2) Element Isolation
     function ElementSelected(element)	//finished selecting element.  setup string to prompt user.
     {
-        PromptUserXpath(ElementInfo(element));
+        PromptUserXpath(ElementInfo(element), element.innerText);
     }
+    function CreateGuid() {
+        function _p8(s) {
+            var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    }  
 
-
-    function PromptUserXpath(defaultpath)		//prompt user, isolate element.
+    function PromptUserXpath(defaultpath,innertext)		//prompt user, isolate element.
     {
-        //var userpath = prompt("XPath of elements to isolate : ", defaultpath);
-        $("#myModal .modal-body").load('/home/PopupXpathSelect');
-        $("#myModal").modal({
-            autoOpen: true,
-            width: 1000,
-            resizable: true,
-            title: 'Add Xpath',
-            modal: true
-
+        var id = CreateGuid();
+        var data = jQuery.parseJSON(jsondatas.replace(/&quot;/g, '"'));
+        var cmbstr = "<select name='cmb" + id +"' id='cmb" + id+"'>";
+        $(data).each(function(i,v) {
+            cmbstr = cmbstr + "<option>"+v+"</option>";
         });
+        cmbstr = cmbstr + "</select>";
+        cmbstr = cmbstr +
+            '<input checked name="chck' +
+            id +
+            '" id="chck' +
+            id +
+            '" type="checkbox" value="' +
+            defaultpath +
+            '"/><label>' +
+            innertext +
+            '</label><br/>';
+        //var userpath = prompt("XPath of elements to isolate : ", defaultpath);
+        $("#xpath-list").append("<div>" + cmbstr+"</div>");
     }
     //(under construction) work on this function
     //currently only simple expressions are converted.
@@ -233,7 +248,7 @@
  */
     var getNodeXPath = function (node) {
         if (node && node.id)
-            return '//*[@id="' + node.id + '"]';
+            return "//*[@id='" + node.id + "']";
         else
             return getNodeTreeXPath(node);
     };
@@ -246,7 +261,7 @@
             var index = 0;
             // EXTRA TEST FOR ELEMENT.ID
             if (node && node.id) {
-                paths.splice(0, 0, '/*[@id="' + node.id + '"]');
+                paths.splice(0, 0, "/*[@id='" + node.id + "']");
                 break;
             }
 

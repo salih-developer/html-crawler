@@ -1,12 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
 @model CrawlerViewModel
 @{
     ViewData["Title"] = "About";
 }
-@section Scripts {
-    <script src="~/js/XPathSelector.js"></script>
-}
+
+<p></p>
 <div class="row">
+
     @using (Html.BeginForm("About", "Home", null, FormMethod.Post))
     {
         <input id="url" name="url" type="text" />
@@ -16,40 +17,27 @@
 
 @if (!string.IsNullOrEmpty(Model.HtmlDoc))
 {
-    @Html.Raw(Model.HtmlDoc)
-
-}
-
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+<div class="row">
+    <div class="col-lg-3">
+        @using (Html.BeginForm("SaveXpath", "Home"))
+        { 
+            <div id="xpath-list">
+                @*@Html.DropDownList("xpaths",Model.MapTags.Select(c=>new SelectListItem(c,c)))*@
             </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="btnkaydet" data-dismiss="modal">Kaydet</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
-            </div>
-        </div>
-
+            <button>Kaydet</button>
+        }
     </div>
+    <div class="col-lg-9" id="website">
+       
+        @Html.Raw(Model.HtmlDoc)
+    </div>
+
 </div>
-@*<button onclick="OpenDialog()">Open Dialog</button>*@
-<script>
-   
-    @*function OpenDialog() {
+@section Scripts {
+    <script>
+        var jsondatas="@JsonConvert.SerializeObject(Model.MapTags)";
+    </script>
+            <script src="~/js/XPathSelector.js"></script>
+        }
+        }
 
-        $("#myModal .modal-body").load('@Url.Action("PopupXpathSelect", "Home",new{path})');
-        $("#myModal").modal({
-            autoOpen: true,
-            width: 1000,
-            resizable: true,
-            title: 'Add Xpath',
-            modal: true
-
-        });
-    }*@
-</script>

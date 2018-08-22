@@ -9,6 +9,11 @@ using Project.Crawler.Models;
 
 namespace Project.Crawler.Controllers
 {
+    using System.Collections;
+    using System.ComponentModel.DataAnnotations;
+    using System.Reflection;
+    using Microsoft.AspNetCore.Http;
+    using Project.Common;
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -19,12 +24,19 @@ namespace Project.Crawler.Controllers
         [HttpGet]
         public IActionResult About()
         {
+         var list= typeof(CrawlerModel).GetProperties().Select(s => s.GetCustomAttributes(typeof(DisplayAttribute))).ToList().Select(c => ((DisplayAttribute)c.First()).Name).ToList();
+            var model = new CrawlerViewModel
+                        {
+                             MapTags              = list
+            };
             return this.View(new CrawlerViewModel{});
         }
 
         [HttpPost]
         public IActionResult About(string url)
         {
+            var list = typeof(CrawlerModel).GetProperties().Select(s => s.GetCustomAttributes(typeof(DisplayAttribute))).ToList().Select(c => ((DisplayAttribute)c.First()).Name).ToList();
+
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = web.Load(url);
 
@@ -34,8 +46,9 @@ namespace Project.Crawler.Controllers
             var model = new CrawlerViewModel
                         {
                             KeyValuePairs = keyValues,
-                            HtmlDoc=doc.DocumentNode.InnerHtml
-                        };
+                            HtmlDoc=doc.DocumentNode.InnerHtml,
+                            MapTags = list
+            };
             return View(model);
         }
 
@@ -51,8 +64,39 @@ namespace Project.Crawler.Controllers
         {
             return View();
         }
-        public IActionResult SaveXpath()
+        [HttpPost]
+        public IActionResult SaveXpath(IFormCollection form)
         {
+            SortedList<string,string> keyValues=new SortedList<string, string>(); 
+            foreach (var contain in form)
+            {
+                try
+                {
+                    if (contain.Key.Contains("cmb"))
+                    {
+
+                        keyValues.Add(contain.Value, form[contain.Key.Replace("cmb", "chck")]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+             
+            }
+
+            var list = typeof(CrawlerModel).GetProperties().Select(s =>new{p=s,a= s.GetCustomAttributes(typeof(DisplayAttribute)).First() } ).ToList().Select(c =>new{p=c.p,n=((DisplayAttribute)c.a).Name}).ToList();
+            CrawlerModel model=new  CrawlerModel();
+
+            foreach (var item in list)
+            {
+                if (keyValues.ContainsKey(item.n))
+                {
+                    item.p.SetValue(model, keyValues[item.n]);
+                }
+
+            }
+          
             return null;
         }
 
