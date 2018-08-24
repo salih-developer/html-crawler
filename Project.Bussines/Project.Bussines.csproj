@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="NEST" Version="2.5.8" />
   </ItemGroup>
 
 </Project>

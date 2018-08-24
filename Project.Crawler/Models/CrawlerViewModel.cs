@@ -15,5 +15,6 @@ namespace Project.Crawler.Models
         public List<KeyValuePair<string, string>> KeyValuePairs { get; set; }
         public List<string> MapTags { get; set; }
         public string HtmlDoc { get; set; }
+        public string Url { get; set; }
     }
 }

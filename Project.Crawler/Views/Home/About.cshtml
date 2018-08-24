@@ -22,7 +22,7 @@
         @using (Html.BeginForm("SaveXpath", "Home"))
         { 
             <div id="xpath-list">
-                @*@Html.DropDownList("xpaths",Model.MapTags.Select(c=>new SelectListItem(c,c)))*@
+               @Html.Hidden("SiteUrl",Model.Url)
             </div>
             <button>Kaydet</button>
         }
