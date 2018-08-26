@@ -29,9 +29,27 @@
         {
             var list = typeof(ScrapingXpath).GetProperties().Select(s => s.GetCustomAttributes(typeof(DisplayAttribute))).ToList().Select(c => ((DisplayAttribute)c.First()).Name).ToList();
             var web = new HtmlWeb();
-            var doc = web.Load(url);
+
+          var doc =  web.Load(url)
+                        ;
+            //foreach (var items in doc.DocumentNode.SelectNodes("//script"))
+            //{
+            //    items.Remove();
+            //}
+       
+            //foreach (var htmlNode in doc.DocumentNode.ChildNodes.Where(x => x.XPath.Contains("#comment")).ToList())
+            //{
+            //    htmlNode.Remove();
+            //}
+            //foreach (var htmlNode in doc.DocumentNode.ChildNodes.Where(x => x.XPath.Contains("/#document")).ToList())
+            //{
+            //    htmlNode.Remove();
+            //}
+            //foreach (var selectNode in doc.DocumentNode.SelectNodes("//head/meta"))
+            //{
+            //    selectNode.Remove();
+            //}
             var keyValues = new List<KeyValuePair<string, string>>();
-            this.GetData(doc.DocumentNode.SelectSingleNode("//body"), ref keyValues);
             var model = new CrawlerViewModel { KeyValuePairs = keyValues, HtmlDoc = doc.DocumentNode.InnerHtml, MapTags = list, Url = url };
             return this.View(model);
         }

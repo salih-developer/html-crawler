@@ -22,10 +22,10 @@
         {
             //setup event listeners
             //var pathx="//div | //span | //table | //td | //tr | //ul | //ol | //li | //p";
-            var pathx = "//div | //span | //a | //strong | //img | //table | //th | //td | //tr | //ul | //ol | //li | //p | //iframe";
+            var pathx = "//div | //span | //a | //strong | //img | //table | //th | //td | //tr | //ul | //ol | //li | //p | //h1 | //h2";
             var selection = $XPathSelect(pathx);
             for (var element, i = 0; element = selection(i); i++) {
-                if (element.tagName.match(/^(div|span|table|td|tr|ul|ol|li|p|strong|a|img)$/i))	//redundant check.
+                if (element.tagName.match(/^(div|span|table|td|tr|ul|ol|li|p|strong|a|img|h1|h2)$/i))	//redundant check.
                 {
                     var m = new classMausWork(element);
                     gObjArrMW.push(m);
@@ -120,19 +120,25 @@
             //ev.stopPropagation();
         };
         this.mouse_click = function (ev) {
-            if (ev.buttons != 2) {
-                ev.stopPropagation();
-                return;
-            }
-              
+           
+           
             //if (ev.target != gHoverElement) return;
             var e = element;		//var e=ev.target;
-            e.setAttribute('style', defaultStyle);  //ev.target.setAttribute('style',defaultStyle);			
-            gSelectedElement = e;		//gSelectedElement=ev.target;		//=ev.target;			
+            e.setAttribute('style', defaultStyle);  //ev.target.setAttribute('style',defaultStyle);		
+            gSelectedElement = e;		//gSelectedElement=ev.target;		//=ev.target;
             ev.stopPropagation();
+
+            if (ev.buttons === 1) {
+                //ev.preventDefault();
+                //SetupDOMSelection();
+                return;
+            }
+            			
+           
             //CleanupDOMSelection();
             //gHoverElement = null;
             //gHovering = false;
+         
             ElementSelected(gSelectedElement);	//finished selecting, cleanup then move to next part, element isolation.
         };
         this.resetElementStyle = function () {
@@ -184,7 +190,7 @@
     {
         var id = CreateGuid();
         var data = jQuery.parseJSON(jsondatas.replace(/&quot;/g, '"'));
-        var cmbstr = "<select name='cmb" + id +"' id='cmb" + id+"'>";
+        var cmbstr = "<select style='width:200px' name='cmb" + id +"' id='cmb" + id+"'>";
         $(data).each(function(i,v) {
             cmbstr = cmbstr + "<option>"+v+"</option>";
         });
@@ -199,35 +205,10 @@
             '"/><label>' +
             innertext +
             '</label><br/>';
-        //var userpath = prompt("XPath of elements to isolate : ", defaultpath);
+        var userpath = prompt("XPath of elements to isolate : ", defaultpath);
         $("#xpath-list").append("<div>" + cmbstr+"</div>");
     }
-    //(under construction) work on this function
-    //currently only simple expressions are converted.
-    function TransformToNonIsolatePath(u) {
-        var i = "";
-        i += "//*[count(./descendant-or-self::";
-        i += u;
-        i += ")=0][count(./ancestor-or-self::";
-        i += u;
-        i += ")=0]";
-        i += "[count(./ancestor-or-self::head)=0][count(./ancestor-or-self::title)=0]";
-        return i;
-    }
-
-
-    ////support
-    //function $XPathSelect(p, context) 
-    //{
-    //  if (!context) context = document;
-    //  var i, arr = [], xpr = document.evaluate(p, context, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-    //  return function(x) { return xpr.snapshotItem(x); };	//closure.  wooot!  returns function-type array of elements (usually elements, or something else depending on the xpath expression).
-    //}
-    //function $XPathSelect(p, context) {
-    //    if (!context) context = document;
-    //    var xpr = document.evaluate(p, context, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-    //    return function (x) { return xpr.snapshotItem(x); };
-    //}
+   
 
     function $XPathSelect(p, context) {
         if (!context) context = document;
@@ -283,3 +264,11 @@
     };
 
 })();
+
+$(function () {
+
+    $(this).on("contextmenu", function (event) {
+
+        event.preventDefault(); // Sağ menünün default event'ını kapatır.
+    });
+}); 

@@ -17,27 +17,28 @@
 
 @if (!string.IsNullOrEmpty(Model.HtmlDoc))
 {
-<div class="row">
-    <div class="col-lg-3">
-        @using (Html.BeginForm("SaveXpath", "Home"))
-        { 
-            <div id="xpath-list">
-               @Html.Hidden("SiteUrl",Model.Url)
-            </div>
-            <button>Kaydet</button>
-        }
-    </div>
-    <div class="col-lg-9" id="website">
-       
-        @Html.Raw(Model.HtmlDoc)
-    </div>
+    <div class="row">
 
-</div>
-@section Scripts {
-    <script>
+        <div id="website">
+
+            @Html.Raw(Model.HtmlDoc)
+        </div>
+
+    </div>
+    @section Scripts {
+     
+        <script>
         var jsondatas="@JsonConvert.SerializeObject(Model.MapTags)";
-    </script>
-            <script src="~/js/XPathSelector.js"></script>
-        }
-        }
+        </script>
+        <script src="http://localhost:64793/js/XPathSelector.js"></script>
+    }
+}
 
+<div class="row">
+    <form action="http://localhost:64793/Home/SaveXpath" method="post">
+        <div id="xpath-list">
+            @Html.Hidden("SiteUrl", Model.Url)
+        </div>
+        <button>Kaydet</button>
+    </form>
+</div>
