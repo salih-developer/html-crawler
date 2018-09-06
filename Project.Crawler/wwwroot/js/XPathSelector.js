@@ -196,11 +196,11 @@
         });
         cmbstr = cmbstr + "</select>";
         cmbstr = cmbstr +
-            '<input checked name="chck' +
+            '<input style="width: 200px" name="chck' +
             id +
             '" id="chck' +
             id +
-            '" type="checkbox" value="' +
+            '" type="text" value="' +
             defaultpath +
             '"/><label>' +
             innertext +

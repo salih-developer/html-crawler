@@ -31,9 +31,14 @@ namespace Project.Common
         public string Column2 { get; set; }
         [Display(Name = "Column3"), Nest.String]
         public string Column3 { get; set; }
-        [Display(Name = "Column4"), Nest.String]
-        public string Column4 { get; set; }
-        [Display(Name = "Column5"), Nest.String]
-        public string Column5 { get; set; }
+        [Display(Name = "Picture")]
+        public string Picture { get; set; }
+        [Display(Name = "Owner"), Nest.String]
+        public string Owner { get; set; }
+        [Display(Name = "Phone"), Nest.String]
+        public string Phone { get; set; }
+        [Display(Name = "Adres"), Nest.String]
+        public string Adres { get; set; }
+
     }
 }

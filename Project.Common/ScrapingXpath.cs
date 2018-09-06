@@ -48,5 +48,14 @@
         [Display(Name = "Picture")]
         [String]
         public string Picture { get; set; }
+        [Display(Name = "Owner")]
+        [String]
+        public string Owner { get; set; }
+        [Display(Name = "Phone")]
+        [String]
+        public string Phone { get; set; }
+        [Display(Name = "Adres")]
+        [String]
+        public string Adres { get; set; }
     }
 }
