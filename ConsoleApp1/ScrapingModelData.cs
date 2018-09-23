@@ -4,12 +4,15 @@ using System.Text;
 
 namespace Project.Common
 {
+    using Nest;
     using System.ComponentModel.DataAnnotations;
     [Nest.ElasticsearchType(IdProperty = "Id", Name = "scrapingmodeldata")]
     public class ScrapingModelData
     {
+        [String(Index = FieldIndexOption.NotAnalyzed)]
         public string Id { get; set; }
-        [Display(Name = "SiteUrl"), Nest.String]
+        [Display(Name = "SiteUrl")]
+        [String(Index =FieldIndexOption.NotAnalyzed)]
         public string SiteUrl { get; set; }
         [Display(Name = "Category"), Nest.String]
         public string Category { get; set; }
