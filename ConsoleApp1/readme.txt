@@ -10,6 +10,8 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 sudo yum install ./google-chrome-stable_current_*.rpm
 google-chrome &
 
+yum install -f chromedriver chromium xorg-x11-server-Xvfb
+
 cd /home/dev
 wget https://chromedriver.storage.googleapis.com/2.35/chromedriver_linux64.zip
 unzip chromedriver_linux64.zip

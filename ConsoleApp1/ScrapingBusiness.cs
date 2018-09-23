@@ -43,6 +43,7 @@ namespace ConsoleApp1
 
                     GetListPageUrl(listpageUrl + "?page=" + i.ToString());
                     Thread.Sleep(TimeSpan.FromSeconds(3));
+                    break;
                     
                 }
             }
@@ -63,11 +64,12 @@ namespace ConsoleApp1
             chromeOptions.AddArgument("--disable-dev-shm-usage");
             chromeOptions.AddArgument("--ignore-certificate-errors");
             ScrapingModelData data = new ScrapingModelData();
-            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
-            //using (var driver = new ChromeDriver("/home/dev", chromeOptions))
+            //using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            using (var driver = new ChromeDriver("/bin", chromeOptions))
             {
                 driver.Navigate().GoToUrl(pageUrl);
                 var gg = driver.PageSource;
+                Console.WriteLine(gg);
                 var doc = new HtmlDocument();
                 doc.LoadHtml(gg);
                 data.SiteUrl = pageUrl;
@@ -97,11 +99,12 @@ namespace ConsoleApp1
             chromeOptions.AddArgument("--disable-dev-shm-usage");
             chromeOptions.AddArgument("--ignore-certificate-errors");
 
-            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
-            //using (var driver = new ChromeDriver("/home/dev", chromeOptions))
+            //using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            using (var driver = new ChromeDriver("/bin", chromeOptions))
             {
                 driver.Navigate().GoToUrl(listpageUrl);
                 var gg = driver.PageSource;
+                Console.WriteLine(gg);
                 var doc = new HtmlDocument();
                 doc.LoadHtml(gg);
                 var r = doc.DocumentNode.SelectNodes("//*[@id='auctions']/main/div[2]/div/div[3]/div/a");
