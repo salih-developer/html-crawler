@@ -10,7 +10,6 @@
     <PackageReference Include="jQuery.UI" Version="1.12.1.1" />
     <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.1.0" />
     <PackageReference Include="NEST" Version="2.5.8" />
   </ItemGroup>
 
