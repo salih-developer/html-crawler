@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Common", "Project.Common\Project.Common.csproj", "{5A7684D2-7CC7-472D-9FBC-456F65FB925C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.Bussines", "Project.Bussines\Project.Bussines.csproj", "{49F8ECA0-3287-4462-A62B-E735F3FBB106}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.Bussines", "Project.Bussines\Project.Bussines.csproj", "{49F8ECA0-3287-4462-A62B-E735F3FBB106}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

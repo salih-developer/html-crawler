@@ -44,3 +44,4 @@ systemctl enable zingat.service
 systemctl start zingat.service
 systemctl status zingat.service
 
+journalctl --unit zingat.service --follow  
