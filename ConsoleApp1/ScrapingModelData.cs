@@ -44,5 +44,7 @@ namespace Project.Common
         public string Adres { get; set; }
         [Display(Name = "Firm"), Nest.String]
         public string Firm { get; set; }
+        [Nest.Date]
+        public DateTime CreateDate { get; set; }
     }
 }

@@ -14,7 +14,6 @@
     {
         private static void Main(string[] args)
         {
-            LogProvider.SetCurrentLogProvider(new ConsoleLogProvider());
 
             RunProgramRunExample().GetAwaiter().GetResult();
 
@@ -55,7 +54,7 @@
                 await scheduler.ScheduleJob(job, trigger);
 
                 // some sleep to show what's happening
-                await Task.Delay(TimeSpan.FromSeconds(60));
+                await Task.Delay(TimeSpan.FromDays(15));
 
                 // and last shut down the scheduler when you are ready to close your program
                 await scheduler.Shutdown();
@@ -66,33 +65,7 @@
             }
         }
 
-        // simple log provider to get something to the console
-        private class ConsoleLogProvider : ILogProvider
-        {
-            public Logger GetLogger(string name)
-            {
-
-                return (level, func, exception, parameters) =>
-                {
-                    if (level >=Quartz.Logging.LogLevel.Info && func != null)
-                    {
-                        Console.WriteLine("[" + DateTime.Now.ToLongTimeString() + "] [" + level + "] " + func(), parameters);
-                    }
-                    return true;
-                };
-
-            }
-
-            public IDisposable OpenNestedContext(string message)
-            {
-                throw new NotImplementedException();
-            }
-
-            public IDisposable OpenMappedContext(string key, string value)
-            {
-                throw new NotImplementedException();
-            }
-        }
+     
     }
 
     public class HelloJob : IJob
