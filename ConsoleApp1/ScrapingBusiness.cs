@@ -38,7 +38,7 @@ namespace ConsoleApp1
 
             foreach (var listpageUrl in listpageUrls)
             {
-                for (int i = 1; i <= 10; i++)
+                for (int i = 1; i <= 1; i++)
                 {
                     try
                     {
