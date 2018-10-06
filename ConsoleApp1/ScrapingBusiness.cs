@@ -44,16 +44,16 @@ namespace ConsoleApp1
                     {
                         GetListPageUrl(listpageUrl + "?page=" + i.ToString());
                         Thread.Sleep(TimeSpan.FromSeconds(3));
-                        //break;
+                        break;
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
                     }
-                   
+
 
                 }
-                //break;
+                break;
             }
 
             foreach (var item in DetailPageUrlList)
@@ -84,11 +84,14 @@ namespace ConsoleApp1
             chromeOptions.AddArgument("--disable-dev-shm-usage");
             chromeOptions.AddArgument("--ignore-certificate-errors");
             ScrapingModelData data = new ScrapingModelData();
+            var gg = "";
             //using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
             using (var driver = new ChromeDriver("/bin", chromeOptions, TimeSpan.FromMinutes(1)))
             {
                 driver.Navigate().GoToUrl(pageUrl);
-                var gg = driver.PageSource;
+                gg = driver.PageSource;
+
+
                 var doc = new HtmlDocument();
                 doc.LoadHtml(gg);
                 data.SiteUrl = pageUrl;
@@ -99,12 +102,20 @@ namespace ConsoleApp1
                 data.Firm = doc.DocumentNode.SelectSingleNode("//*[@id='details']/div/div[5]/div/div[2]/div/div/div/a[2]").InnerText.Trim();
                 data.Phone = string.Join(';', doc.DocumentNode.SelectNodes("//*[@class='contact-number-area number-area']/a").Select(x => x.Attributes["href"].Value));
                 data.Property = doc.DocumentNode.SelectSingleNode("//*[@id='details']/div/div[5]/div/div/div[2]/div/div[2]").InnerHtml.Trim();
+                data.Propertystr = doc.DocumentNode.SelectSingleNode("//*[@id='details']/div/div[5]/div/div/div[2]/div/div[2]").InnerText.Trim();
                 data.Description = doc.DocumentNode.SelectSingleNode("//*[@id='detailDescription']/div/p").InnerText.Trim();
                 data.Feature = doc.DocumentNode.SelectSingleNode("//*[@id='otherFacilities']/div").InnerHtml.Trim();
+                data.Featurestr = doc.DocumentNode.SelectSingleNode("//*[@id='otherFacilities']/div").InnerText.Trim();
                 data.Category = doc.DocumentNode.SelectSingleNode("//*[@id='breadcrumbContainer']/div/div/ol").InnerHtml.Trim();
+                data.Categorystr = doc.DocumentNode.SelectSingleNode("//*[@id='breadcrumbContainer']/div/div/ol").InnerText.Trim();
                 data.Picture = string.Join(',', doc.DocumentNode.SelectNodes("//div[@class='gallery-container']/a[@class='gallery-item zoon-in-image']").Select(x => x.Attributes["data-lg"].Value));
-            }
 
+                var lot = doc.DocumentNode.SelectSingleNode("//*[@data-locationapi='/api/locationReport']").Attributes["data-id"].Value;
+                driver.Navigate().GoToUrl("https://www.zingat.com/api/locationReport?type=all&locId=" + lot);
+                gg = driver.PageSource;
+                doc.LoadHtml(gg);
+                data.Column1 = doc.DocumentNode.InnerText;
+            }
             ElasticSearchManager elasticSearchManager = new ElasticSearchManager();
             elasticSearchManager.Save(data, "scrapingmodeldata");
 
