@@ -85,8 +85,8 @@ namespace ConsoleApp1
             chromeOptions.AddArgument("--ignore-certificate-errors");
             ScrapingModelData data = new ScrapingModelData();
             var gg = "";
-            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
-            //using (var driver = new ChromeDriver("/bin", chromeOptions, TimeSpan.FromMinutes(1)))
+            //using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            using (var driver = new ChromeDriver("/bin", chromeOptions, TimeSpan.FromMinutes(1)))
             {
                 driver.Navigate().GoToUrl(pageUrl);
                 gg = driver.PageSource;
@@ -162,8 +162,8 @@ namespace ConsoleApp1
             chromeOptions.AddArgument("--disable-dev-shm-usage");
             chromeOptions.AddArgument("--ignore-certificate-errors");
 
-            using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
-            //using (var driver = new ChromeDriver("/bin", chromeOptions, TimeSpan.FromMinutes(1)))
+            //using (var driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))
+            using (var driver = new ChromeDriver("/bin", chromeOptions, TimeSpan.FromMinutes(1)))
             {
                 driver.Navigate().GoToUrl(listpageUrl);
                 var gg = driver.PageSource;
