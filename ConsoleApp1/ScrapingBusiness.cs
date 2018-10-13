@@ -44,7 +44,7 @@ namespace ConsoleApp1
                     {
                         GetListPageUrl(listpageUrl + "?page=" + i.ToString());
                         Thread.Sleep(TimeSpan.FromSeconds(3));
-                        break;
+                        //break;
                     }
                     catch (Exception e)
                     {
@@ -53,7 +53,7 @@ namespace ConsoleApp1
 
 
                 }
-                break;
+                //break;
             }
 
             foreach (var item in DetailPageUrlList)
