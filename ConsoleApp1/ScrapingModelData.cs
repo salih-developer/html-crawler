@@ -57,7 +57,7 @@ namespace Project.Common
         public string Firm { get; set; }
         [Nest.Date]
         public DateTime CreateDate { get; set; }
-        [Nest.Boolean]
+        [Nest.Boolean(Index = NonStringIndexOption.NotAnalyzed)]
         public bool IsTransfer { get; set; }
     }
 }

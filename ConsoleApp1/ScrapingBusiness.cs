@@ -142,7 +142,7 @@ namespace ConsoleApp1
                 data.Category = doc.DocumentNode.SelectSingleNode("//*[@id='breadcrumbContainer']/div/div/ol").InnerHtml.Trim();
                 data.Categorystr = doc.DocumentNode.SelectSingleNode("//*[@id='breadcrumbContainer']/div/div/ol").InnerText.Trim();
                 data.Picture = string.Join(',', doc.DocumentNode.SelectNodes("//div[@class='gallery-container']/a[@class='gallery-item zoon-in-image']").Select(x => x.Attributes["data-lg"].Value));
-
+                data.IsTransfer = false;
                 var lot = doc.DocumentNode.SelectSingleNode("//*[@data-locationapi='/api/locationReport']").Attributes["data-id"].Value;
                 driver.Navigate().GoToUrl("https://www.zingat.com/api/locationReport?type=all&locId=" + lot);
                 gg = driver.PageSource;
